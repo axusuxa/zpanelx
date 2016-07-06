@@ -11,5 +11,5 @@
  */
 $host = 'localhost';
 $dbname = 'zpanel_core';
-$user = 'root';
+$user = 'zroot';
 $pass = 'YOUR_ROOT_MYSQL_PASSWORD';
