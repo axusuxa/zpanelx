@@ -35,9 +35,9 @@ function ipmiinfo_populate(xml) {
     var html = "";
     $("#Plugin_ipmiinfoTable").html(" ");
 
-    $("Plugins Plugin_ipmiinfo Temperature Item", xml).each(function ipmiinfo_getitem(idp) {
+    $("Plugins Plugin_ipmiinfo Temperatures Item", xml).each(function ipmiinfo_getitem(idp) {
         if(idp==0) {
-            html += "<tr><th colspan=\"2\" style=\"font-weight:bold\">" + genlang(3, true, "ipmiinfo") + "</th></tr>\n";
+            html += "<tr><th colspan=\"2\" style=\"font-weight:bold\">" + genlang(3, false, "ipmiinfo") + "</th></tr>\n";
         }
         html += "    <tr>\n";
         html += "      <td style=\"font-weight:normal\">" +  $(this).attr("Label") + "</td>\n";
@@ -48,7 +48,7 @@ function ipmiinfo_populate(xml) {
 
     $("Plugins Plugin_ipmiinfo Fans Item", xml).each(function ipmiinfo_getitem(idp) {
         if(idp==0) {
-            html += "<tr><th colspan=\"2\" style=\"font-weight:bold\">" + genlang(4, true, "ipmiinfo") + "</th></tr>\n";
+            html += "<tr><th colspan=\"2\" style=\"font-weight:bold\">" + genlang(4, false, "ipmiinfo") + "</th></tr>\n";
         }
         html += "    <tr>\n";
         html += "      <td style=\"font-weight:normal\">" +  $(this).attr("Label") + "</td>\n";
@@ -57,9 +57,9 @@ function ipmiinfo_populate(xml) {
         ipmiinfo_show = true;
     });
 
-    $("Plugins Plugin_ipmiinfo Voltage Item", xml).each(function ipmiinfo_getitem(idp) {
+    $("Plugins Plugin_ipmiinfo Voltages Item", xml).each(function ipmiinfo_getitem(idp) {
         if(idp==0) {
-            html += "<tr><th colspan=\"2\" style=\"font-weight:bold\">" + genlang(5, true, "ipmiinfo") + "</th></tr>\n";
+            html += "<tr><th colspan=\"2\" style=\"font-weight:bold\">" + genlang(5, false, "ipmiinfo") + "</th></tr>\n";
         }
         html += "    <tr>\n";
         html += "      <td style=\"font-weight:normal\">" +  $(this).attr("Label") + "</td>\n";
@@ -68,9 +68,30 @@ function ipmiinfo_populate(xml) {
         ipmiinfo_show = true;
     });
 
+    $("Plugins Plugin_ipmiinfo Currents Item", xml).each(function ipmiinfo_getitem(idp) {
+        if(idp==0) {
+            html += "<tr><th colspan=\"2\" style=\"font-weight:bold\">" + genlang(7, false, "ipmiinfo") + "</th></tr>\n";
+        }
+        html += "    <tr>\n";
+        html += "      <td style=\"font-weight:normal\">" +  $(this).attr("Label") + "</td>\n";
+        html += "      <td style=\"font-weight:normal\">" +  $(this).attr("Value") + "</td>\n";
+        html += "    </tr>\n";
+        ipmiinfo_show = true;
+    });
+
+    $("Plugins Plugin_ipmiinfo Powers Item", xml).each(function ipmiinfo_getitem(idp) {
+        if(idp==0) {
+            html += "<tr><th colspan=\"2\" style=\"font-weight:bold\">" + genlang(8, false, "ipmiinfo") + "</th></tr>\n";
+        }
+        html += "    <tr>\n";
+        html += "      <td style=\"font-weight:normal\">" +  $(this).attr("Label") + "</td>\n";
+        html += "      <td style=\"font-weight:normal\">" +  $(this).attr("Value") + "</td>\n";
+        html += "    </tr>\n";
+        ipmiinfo_show = true;
+    });
     $("Plugins Plugin_ipmiinfo Misc Item", xml).each(function ipmiinfo_getitem(idp) {
         if(idp==0) {
-            html += "<tr><th colspan=\"2\" style=\"font-weight:bold\">" + genlang(6, true, "ipmiinfo") + "</th></tr>\n";
+            html += "<tr><th colspan=\"2\" style=\"font-weight:bold\">" + genlang(6, false, "ipmiinfo") + "</th></tr>\n";
         }
         html += "    <tr>\n";
         html += "      <td style=\"font-weight:normal\">" +  $(this).attr("Label") + "</td>\n";
@@ -100,20 +121,21 @@ function ipmiinfo_buildTable() {
  * load the xml via ajax
  */
 function ipmiinfo_request() {
+    $("#Reload_ipmiinfoTable").attr("title", "reload");
     $.ajax({
         url: "xml.php?plugin=ipmiinfo",
         dataType: "xml",
         error: function ipmiinfo_error() {
-        $.jGrowl("Error loading XML document for Plugin ipmiinfo!");
-    },
-    success: function ipmiinfo_buildblock(xml) {
-        populateErrors(xml);
-        ipmiinfo_populate(xml);
-        if (ipmiinfo_show) {
-            plugin_translate("ipmiinfo");
-            $("#Plugin_ipmiinfo").show();
+            $.jGrowl("Error loading XML document for Plugin ipmiinfo!");
+        },
+        success: function ipmiinfo_buildblock(xml) {
+            populateErrors(xml);
+            ipmiinfo_populate(xml);
+            if (ipmiinfo_show) {
+                plugin_translate("ipmiinfo");
+                $("#Plugin_ipmiinfo").show();
+            }
         }
-    }
     });
 }
 
@@ -127,6 +149,6 @@ $(document).ready(function ipmiinfo_buildpage() {
 
     $("#Reload_ipmiinfoTable").click(function ipmiinfo_reload(id) {
         ipmiinfo_request();
-        $("#Reload_ipmiinfoTable").attr("title",datetime());
+        $(this).attr("title", datetime());
     });
 });
